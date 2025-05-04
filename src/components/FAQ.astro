@@ -1,0 +1,102 @@
+<section
+  class="bg-[#020711] py-16 flex items-center justify-center flex-col gap-6"
+>
+  <div class="w-full max-w-2xl">
+    <div class="text-3xl text-white">FAQs</div>
+    <p class="text-[#FFFFFF66] mt-4">
+      Answers to the most frequently asked questions.
+    </p>
+  </div>
+
+  <div class="w-full max-w-2xl space-y-4" id="faq-container"></div>
+
+  <script type="module" is:inline>
+    const faqs = [
+      {
+        question: "How do you handle my data?",
+        answer:
+          "We take privacy seriously. Your data is encrypted and securely stored. We never share it with third parties.",
+      },
+      {
+        question: "What's the difference between the Pro and Team plan?",
+        answer:
+          "The Pro plan is for individuals. The Team plan includes collaboration features and shared billing.",
+      },
+      {
+        question: "Can I use my own OpenAI API key?",
+        answer:
+          "Yes, you can use your own API key by configuring it in the settings.",
+      },
+      {
+        question: "Which model do you use for Raycast AI?",
+        answer:
+          "We use OpenAI’s latest GPT-4-turbo model for best performance and accuracy.",
+      },
+      {
+        question: "Can I upgrade my Teams subscription to use GPT-4?",
+        answer:
+          "Absolutely! You can switch to a GPT-4 powered plan anytime from your dashboard.",
+      },
+      {
+        question: "Does Raycast have a Student Program?",
+        answer:
+          "Yes! We offer special discounts for students. Just verify your student status during signup.",
+      },
+    ];
+
+    const container = document.getElementById("faq-container");
+
+    faqs.forEach((faq, index) => {
+      const wrapper = document.createElement("div");
+      wrapper.className =
+        "border-b border-[#FFFFFF22] rounded-lg overflow-hidden transition-all";
+
+      wrapper.innerHTML = `
+        <button
+          class="w-full text-left px-4 py-3 text-white flex justify-between items-center faq-toggle"
+          data-index="${index}"
+        >
+<span class="block w-full">${faq.question}</span>
+          <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div
+          class="max-h-0 px-4 text-sm text-[#FFFFFF99] overflow-hidden transition-all duration-300"
+        >
+          <div class="py-2">${faq.answer}</div>
+        </div>
+      `;
+      container.appendChild(wrapper);
+    });
+
+    let openIndex = null;
+
+    document.querySelectorAll(".faq-toggle").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const idx = parseInt(btn.dataset.index);
+        const content = btn.nextElementSibling;
+
+        if (openIndex !== null && openIndex !== idx) {
+          const openBtn = document.querySelector(
+            `.faq-toggle[data-index="${openIndex}"]`
+          );
+          const openContent = openBtn.nextElementSibling;
+          openContent.style.maxHeight = "0px";
+          openBtn.querySelector("svg").classList.remove("rotate-180");
+        }
+
+        if (openIndex === idx) {
+          content.style.maxHeight = "0px";
+          btn.querySelector("svg").classList.remove("rotate-180");
+          openIndex = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+          btn.querySelector("svg").classList.add("rotate-180");
+          openIndex = idx;
+        }
+      });
+    });
+  </script>
+</section>
